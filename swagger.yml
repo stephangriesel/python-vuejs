@@ -1,0 +1,129 @@
+swagger: "2.0"
+info:
+  title: Random Quote API
+  description: An API for generating random quotes
+  version: "1.0"
+servers:
+  - url: "/api"
+host: localhost:5000
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /random-quotes:
+    get:
+      summary: Get a random quote
+      operationId: get_random_quote
+      responses:
+        "200":
+          description: Returns a random quote
+          schema:
+            $ref: "#/definitions/Quote"
+    post:
+      summary: Add a new quote
+      operationId: add_quote
+      parameters:
+        - name: id
+          in: body
+          description: ID of the new quote
+          required: true
+          schema:
+            type: integer
+        - name: author
+          in: body
+          description: Author of the new quote
+          required: true
+          schema:
+            type: string
+        - name: quote
+          in: body
+          description: Text of the new quote
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+          description: Returns the newly added quote
+          schema:
+            $ref: "#/definitions/Quote"
+    put:
+      summary: Update an existing quote
+      operationId: update_quote
+      parameters:
+        - name: id
+          in: body
+          description: ID of the quote to update
+          required: true
+          schema:
+            type: integer
+        - name: author
+          in: body
+          description: Author of the quote
+          required: true
+          schema:
+            type: string
+        - name: quote
+          in: body
+          description: Text of the quote
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Returns the updated quote
+          schema:
+            $ref: "#/definitions/Quote"
+        "201":
+          description: Returns the newly added quote if it doesn't exist
+          schema:
+            $ref: "#/definitions/Quote"
+    delete:
+      summary: Delete an existing quote
+      operationId: delete_quote
+      parameters:
+        - name: id
+          in: body
+          description: ID of the quote to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Returns a success message
+        "404":
+          description: Returns an error message if the quote is not found
+  /random-quotes/{id}:
+    get:
+      summary: Get a specific quote by ID
+      operationId: get_quote_by_id
+      parameters:
+        - name: id
+          in: path
+          description: ID of the quote to retrieve
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: Returns the requested quote
+          schema:
+            $ref: "#/definitions/Quote"
+        "404":
+          description: Returns an error message if the quote is not found
+definitions:
+  Quote:
+    type: object
+    properties:
+      id:
+        type: integer
+      author:
+        type: string
+      quote:
+        type: string
+    required:
+      - id
+      - author
+      - quote
